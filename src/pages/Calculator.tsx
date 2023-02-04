@@ -8,7 +8,7 @@ import {
   Table,
   Text,
 } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRoute } from 'wouter'
 
 const baseColumns: TColumn[] = [
@@ -108,8 +108,7 @@ const fineTuneData: TFineTuneRow[] = [
 
 function Calculator() {
   const [match, params] = useRoute<{ token: string }>('/token/:token')
-  console.log({ params })
-  const [request, setRequest] = useState<string>(params?.token ?? '1,000')
+  const [request, setRequest] = useState<string>('1,000')
   const [baseRows, setBaseRows] = useState<TRow[]>(
     baseData.map((data) => ({ ...data, request: data['price'] }))
   )
@@ -121,23 +120,39 @@ function Calculator() {
     }))
   )
 
+  useEffect(() => {
+    if (match && params) {
+      const _value = params.token
+      if (/^\d+$/.test(_value.slice(-1))) {
+        const _request = parseFloat(_value)
+        setRequest(_request.toLocaleString())
+        _updatePrice(_request)
+      }
+    }
+  }, [])
+
+  const _updatePrice = (request: number) => {
+    const newBaseRows = baseRows
+      .slice()
+      .map((row) => ({ ...row, request: row['price'] * (request / 1000) }))
+    const newFineTuneRows = fineTuneRows.slice().map((row) => ({
+      ...row,
+      'training-request': row['training'] * (request / 1000),
+      'usage-request': row['usage'] * (request / 1000),
+    }))
+    setBaseRows(newBaseRows)
+    setFineTuneRows(newFineTuneRows)
+  }
+
   const handleRequestChange = (event: React.ChangeEvent<FormElement>) => {
     const _value = event.target.value.replace(/,/g, '')
     if (!/^\d+$/.test(_value.slice(-1))) {
+      setRequest('')
       return
     }
     const _request = parseFloat(_value)
-    const newBaseRows = baseRows
-      .slice()
-      .map((row) => ({ ...row, request: row['price'] * (_request / 1000) }))
-    const newFineTuneRows = fineTuneRows.slice().map((row) => ({
-      ...row,
-      'training-request': row['training'] * (_request / 1000),
-      'usage-request': row['usage'] * (_request / 1000),
-    }))
     setRequest(_request.toLocaleString())
-    setBaseRows(newBaseRows)
-    setFineTuneRows(newFineTuneRows)
+    _updatePrice(_request)
   }
 
   return (

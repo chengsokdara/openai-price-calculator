@@ -72,7 +72,7 @@ function Tokenizer() {
             h5
           >{`Characters: ${prompt.length ?? 0}`}</Text>
         </Row>
-        <Link href={`/token/${token?.bpe.length.toLocaleString() ?? '1,000'}`}>
+        <Link href={`/token/${token?.bpe.length ?? '1000'}`}>
           <Button as="a" color="gradient">
             Paste to Price Calculator
           </Button>
