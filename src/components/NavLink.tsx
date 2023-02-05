@@ -1,5 +1,5 @@
-import { Link, useRoute, type LinkProps } from 'wouter'
 import { Navbar } from '@nextui-org/react'
+import { Link, useRoute, type LinkProps } from 'wouter'
 
 function NavLink(props: LinkProps) {
   const [isActive] = useRoute(props.href!)

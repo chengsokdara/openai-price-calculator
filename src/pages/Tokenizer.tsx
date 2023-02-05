@@ -1,24 +1,34 @@
 import {
   Button,
   Col,
-  Container,
   FormElement,
   Row,
   Spacer,
   Text,
   Textarea,
 } from '@nextui-org/react'
+import { logEvent } from 'firebase/analytics'
 import GPT3Tokenizer from 'gpt3-tokenizer'
-import { Link } from 'wouter'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link, useLocation } from 'wouter'
+import { analytics } from '../firebase'
 
 const tokenizer = new GPT3Tokenizer({ type: 'gpt3' })
 
 type TResult = { bpe: number[]; text: string[] }
 
 function Tokenizer() {
+  const [location] = useLocation()
   const [prompt, setPrompt] = useState<string>('')
   const [token, setToken] = useState<TResult>()
+
+  useEffect(() => {
+    logEvent(analytics, 'page_view', {
+      page_location: location,
+      page_path: '/tokenizer',
+      page_title: 'Token Counter',
+    })
+  }, [])
 
   const handlePromptChange = (event: React.ChangeEvent<FormElement>) => {
     const text = event.target.value

@@ -1,3 +1,9 @@
+type TColumn = {
+  [key: string]: any
+  key: string
+  label: string
+}
+
 type TRow = {
   [key: string]: any
   key: string
@@ -6,8 +12,9 @@ type TRow = {
   request?: number
 } & Record<string, any>
 
-type TColumn = {
-  [key: string]: any
-  key: string
-  label: string
-}
+type TFineTuneRow = {
+  training: number
+  'training-request'?: number
+  usage: number
+  'usage-request'?: number
+} & Omit<TRow, 'price' | 'request'>
