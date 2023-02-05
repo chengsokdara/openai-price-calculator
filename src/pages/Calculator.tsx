@@ -156,86 +156,82 @@ function Calculator() {
   }
 
   return (
-    <Container css={{ fg: 1 }} sm>
-      <Row>
-        <Col>
-          <Input
-            css={{ mt: '$lg' }}
-            aria-label="token amount input"
-            bordered
-            color="secondary"
-            placeholder="Enter token amount"
-            size="lg"
-            fullWidth
-            width="35%"
-            value={request}
-            labelRight={'tokens'}
-            onChange={handleRequestChange}
-          />
-          <Text
-            css={{
-              my: '$sm',
-              textGradient: '45deg, $blue600 -20%, $pink600 50%',
-            }}
-            h3
-          >
-            Base model price calculator
-          </Text>
-          <Table aria-label="GPT-3 price table" bordered lined sticked>
-            <Table.Header columns={baseColumns}>
-              {(column) => <Table.Column>{column.label}</Table.Column>}
-            </Table.Header>
-            <Table.Body items={baseRows}>
-              {(item) => (
-                <Table.Row key={item.key}>
-                  {(columnKey) => (
-                    <Table.Cell>
-                      {columnKey === 'price' || columnKey === 'request'
-                        ? `$${item[columnKey]?.toLocaleString(undefined, {
-                            maximumFractionDigits: 4,
-                          })}`
-                        : item[columnKey]}
-                    </Table.Cell>
-                  )}
-                </Table.Row>
+    <>
+      <Input
+        css={{ mt: '$lg' }}
+        aria-label="token amount input"
+        bordered
+        color="secondary"
+        placeholder="Enter token amount"
+        size="lg"
+        fullWidth
+        width="35%"
+        value={request}
+        labelRight={'tokens'}
+        onChange={handleRequestChange}
+      />
+      <Text
+        css={{
+          my: '$sm',
+          textGradient: '45deg, $blue600 -20%, $pink600 50%',
+        }}
+        h3
+      >
+        Base model price calculator
+      </Text>
+      <Table aria-label="GPT-3 price table" bordered lined sticked>
+        <Table.Header columns={baseColumns}>
+          {(column) => <Table.Column>{column.label}</Table.Column>}
+        </Table.Header>
+        <Table.Body items={baseRows}>
+          {(item) => (
+            <Table.Row key={item.key}>
+              {(columnKey) => (
+                <Table.Cell>
+                  {columnKey === 'price' || columnKey === 'request'
+                    ? `$${item[columnKey]?.toLocaleString(undefined, {
+                        maximumFractionDigits: 4,
+                      })}`
+                    : item[columnKey]}
+                </Table.Cell>
               )}
-            </Table.Body>
-          </Table>
-          <Text
-            css={{
-              my: '$sm',
-              textGradient: '45deg, $blue600 -20%, $pink600 50%',
-            }}
-            h3
-          >
-            Fine-tune model price calculator
-          </Text>
-          <Table aria-label="GPT-3 price table" bordered lined sticked>
-            <Table.Header columns={fineTuneColumns}>
-              {(column) => <Table.Column>{column.label}</Table.Column>}
-            </Table.Header>
-            <Table.Body items={fineTuneRows}>
-              {(item) => (
-                <Table.Row key={item.key}>
-                  {(columnKey) => (
-                    <Table.Cell>
-                      {columnKey === 'training' ||
-                      columnKey === 'training-request' ||
-                      columnKey === 'usage' ||
-                      columnKey === 'usage-request'
-                        ? `$${item[columnKey]?.toLocaleString(undefined, {
-                            maximumFractionDigits: 4,
-                          })}`
-                        : item[columnKey]}
-                    </Table.Cell>
-                  )}
-                </Table.Row>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+      <Text
+        css={{
+          my: '$sm',
+          textGradient: '45deg, $blue600 -20%, $pink600 50%',
+        }}
+        h3
+      >
+        Fine-tune model price calculator
+      </Text>
+      <Table aria-label="GPT-3 price table" bordered lined sticked>
+        <Table.Header columns={fineTuneColumns}>
+          {(column) => <Table.Column>{column.label}</Table.Column>}
+        </Table.Header>
+        <Table.Body items={fineTuneRows}>
+          {(item) => (
+            <Table.Row key={item.key}>
+              {(columnKey) => (
+                <Table.Cell>
+                  {columnKey === 'training' ||
+                  columnKey === 'training-request' ||
+                  columnKey === 'usage' ||
+                  columnKey === 'usage-request'
+                    ? `$${item[columnKey]?.toLocaleString(undefined, {
+                        maximumFractionDigits: 4,
+                      })}`
+                    : item[columnKey]}
+                </Table.Cell>
               )}
-            </Table.Body>
-          </Table>
-        </Col>
-      </Row>
-    </Container>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    </>
   )
 }
 

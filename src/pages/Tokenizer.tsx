@@ -30,7 +30,7 @@ function Tokenizer() {
   }
 
   return (
-    <Container css={{ fg: 1 }} sm>
+    <>
       <Row>
         <Col>
           <Text
@@ -56,7 +56,7 @@ function Tokenizer() {
         </Col>
       </Row>
       <Spacer y={1} />
-      <Row>
+      <Row wrap="wrap">
         <Row>
           <Text
             css={{
@@ -73,12 +73,20 @@ function Tokenizer() {
           >{`Characters: ${prompt.length ?? 0}`}</Text>
         </Row>
         <Link href={`/token/${token?.bpe.length ?? '1000'}`}>
-          <Button as="a" color="gradient">
+          <Button
+            as="a"
+            css={{
+              '@xsMax': {
+                mt: '$sm',
+              },
+            }}
+            color="gradient"
+          >
             Paste to Price Calculator
           </Button>
         </Link>
       </Row>
-    </Container>
+    </>
   )
 }
 

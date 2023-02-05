@@ -1,16 +1,9 @@
-import { createTheme, NextUIProvider } from '@nextui-org/react'
-import React from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
-
-const darkTheme = createTheme({
-  type: 'dark',
-})
+import App from './components/App'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <NextUIProvider theme={darkTheme}>
-      <App />
-    </NextUIProvider>
-  </React.StrictMode>
+  <StrictMode>
+    <App />
+  </StrictMode>
 )
