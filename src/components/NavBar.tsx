@@ -23,16 +23,29 @@ function NavBar() {
       <Col>
         <Navbar isBordered variant="floating">
           <Navbar.Brand hideIn="xs">
-            <Text
-              css={{
-                lh: '$xs',
-                textGradient: '45deg, $blue600 -20%, $pink600 50%',
-              }}
-              color="gradient"
-              h2
-            >
-              OpenAI Calculator
-            </Text>
+            <Col>
+              <Text
+                css={{
+                  lh: '$sm',
+                  mb: '$0',
+                  textGradient: '45deg, $blue600 -20%, $pink600 50%',
+                }}
+                color="gradient"
+                h2
+              >
+                OAPC
+              </Text>
+              <Text
+                css={{
+                  mt: '$0',
+                  textGradient: '45deg, $blue600 -20%, $pink600 50%',
+                }}
+                h6
+                size="$xs"
+              >
+                OpenAI API Price Calculator
+              </Text>
+            </Col>
           </Navbar.Brand>
           <Navbar.Content
             css={{

@@ -22,9 +22,7 @@ function Tokenizer() {
 
   const handlePromptChange = (event: React.ChangeEvent<FormElement>) => {
     const text = event.target.value
-    console.log({ text })
     const _result = tokenizer.encode(text)
-    console.log({ _result })
     setPrompt(text)
     setToken(_result)
   }
@@ -56,7 +54,12 @@ function Tokenizer() {
         </Col>
       </Row>
       <Spacer y={1} />
-      <Row wrap="wrap">
+      <Row
+        css={{
+          fw: 'nowrap',
+          '@xsMax': { fw: 'wrap' },
+        }}
+      >
         <Row>
           <Text
             css={{
@@ -82,7 +85,7 @@ function Tokenizer() {
             }}
             color="gradient"
           >
-            Paste to Price Calculator
+            Calculate Price
           </Button>
         </Link>
       </Row>
