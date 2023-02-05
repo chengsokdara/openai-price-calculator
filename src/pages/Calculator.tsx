@@ -26,18 +26,24 @@ function Calculator() {
   )
 
   useEffect(() => {
-    logEvent(analytics, 'page_view', {
-      page_location: location,
-      page_path: '/',
-      page_title: 'Price Calculator',
-    })
     if (match && params) {
+      logEvent(analytics, 'page_view', {
+        page_location: location,
+        page_path: '/token',
+        page_title: 'Price Calculator',
+      })
       const _value = params.token
       if (/^\d+$/.test(_value.slice(-1))) {
         const _request = parseFloat(_value)
         setRequest(_request.toLocaleString())
         _updatePrice(_request)
       }
+    } else {
+      logEvent(analytics, 'page_view', {
+        page_location: location,
+        page_path: '/',
+        page_title: 'Price Calculator',
+      })
     }
   }, [])
 
