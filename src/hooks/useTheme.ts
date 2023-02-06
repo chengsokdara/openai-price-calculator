@@ -1,26 +1,22 @@
 import { getDocumentTheme } from '@nextui-org/react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
-export type TUseThemeOptions = {
-  isDark?: boolean
-}
-
 export type TUseThemeReturns = {
   isDark: boolean
   setIsDark: Dispatch<SetStateAction<boolean>>
 }
 
-function useTheme(options?: TUseThemeOptions): TUseThemeReturns {
-  const [isDark, setIsDark] = useState(options?.isDark ?? true)
+function useTheme(): TUseThemeReturns {
+  const [isDark, setIsDark] = useState(true)
 
   useEffect(() => {
     // you can use any storage
     let theme = window.localStorage.getItem('data-theme')
-    setIsDark(theme === 'dark')
+    setIsDark(theme !== 'light')
 
     const observer = new MutationObserver(() => {
       let newTheme = getDocumentTheme(document?.documentElement)
-      setIsDark(newTheme === 'dark')
+      setIsDark(newTheme !== 'light')
     })
 
     // Observe the document theme changes

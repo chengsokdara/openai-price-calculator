@@ -7,9 +7,10 @@ import {
   Text,
   useTheme,
 } from '@nextui-org/react'
-import NavLink from './NavLink'
+import NavLink from '../components/NavLink'
+import { pages, type TPage } from '../constants/configs'
 
-function NavBar() {
+function Header() {
   const { isDark } = useTheme()
 
   const handleChange = () => {
@@ -17,6 +18,12 @@ function NavBar() {
     window.localStorage.setItem('data-theme', nextTheme) // you can use any storage
     changeTheme(nextTheme)
   }
+
+  const renderNavLinks = ({ key, path, title }: TPage) => (
+    <NavLink key={key} href={path}>
+      {title}
+    </NavLink>
+  )
 
   return (
     <Row>
@@ -59,16 +66,15 @@ function NavBar() {
             activeColor="secondary"
             variant="underline-rounded"
           >
-            <NavLink href="/">Price Calculator</NavLink>
-            <NavLink href="/tokenizer">Token Counter</NavLink>
+            {pages.filter(({ hide }) => !hide).map(renderNavLinks)}
           </Navbar.Content>
           <Navbar.Content>
             <Button
+              css={{ bg: isDark ? '$white' : '$black', px: '$5' }}
               auto
-              color="gradient"
-              bordered
               rounded
-              onClick={handleChange}
+              size="sm"
+              onPress={handleChange}
             >
               {isDark ? '☀️' : '🌙'}
             </Button>
@@ -79,4 +85,4 @@ function NavBar() {
   )
 }
 
-export default NavBar
+export default Header

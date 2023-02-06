@@ -1,10 +1,7 @@
 import { globalCss, NextUIProvider } from '@nextui-org/react'
-import { logEvent } from 'firebase/analytics'
-import { useEffect } from 'react'
-import { darkTheme, lightTheme } from '../constants/themes'
-import { analytics } from '../firebase'
-import useTheme from '../hooks/useTheme'
-import Layout from './Layout'
+import { darkTheme, lightTheme } from './constants/themes'
+import useTheme from './hooks/useTheme'
+import Layout from './layout/Layout'
 
 const globalStyles = globalCss({
   html: { height: '100%' },
@@ -16,10 +13,7 @@ const globalStyles = globalCss({
 function App() {
   globalStyles()
   const { isDark } = useTheme()
-
-  useEffect(() => {
-    logEvent(analytics, 'login', { method: 'web' })
-  }, [])
+  console.log({ isDark })
 
   return (
     <NextUIProvider theme={isDark ? darkTheme : lightTheme}>

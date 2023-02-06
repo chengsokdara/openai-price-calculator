@@ -51,6 +51,7 @@ function Tokenizer() {
             Prompt
           </Text>
           <Textarea
+            aria-label="Prompt"
             bordered
             color="secondary"
             placeholder="Enter prompt here"

@@ -1,6 +1,6 @@
 import { Container } from '@nextui-org/react'
 import Footer from './Footer'
-import NavBar from './NavBar'
+import Header from './Header'
 import Routes from './Routes'
 
 function Layout() {
@@ -14,7 +14,7 @@ function Layout() {
       sm
       wrap="nowrap"
     >
-      <NavBar />
+      <Header />
       <Routes />
       <Footer />
     </Container>
