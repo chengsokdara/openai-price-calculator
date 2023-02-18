@@ -1,15 +1,12 @@
-import { Col, Row } from '@nextui-org/react'
-import { type ComponentType, useEffect, useState } from 'react'
+import { Col } from '@ui'
+import Loader from '@ui/Loader'
+import { useEffect, useMemo, useState, type ComponentType } from 'react'
 import {
   Route,
   Switch,
   type DefaultParams,
   type RouteComponentProps,
 } from 'wouter'
-import Loader from '../components/Loader'
-import { pages, type TPage } from '../constants/configs'
-
-const routes = pages.slice().sort((a, b) => a.order - b.order)
 
 function Routes() {
   const [components, setComponents] = useState<
@@ -17,38 +14,132 @@ function Routes() {
   >([])
 
   useEffect(() => {
-    const fetchComponents = async () => {
-      const p = routes.map(async (i) => {
-        const c = await import(`../pages/${i.component}.tsx`)
-        return c.default
-      })
-      const r = await Promise.all(p)
-      setComponents(r)
-    }
-    fetchComponents()
+    ;(async () => {
+      const modules = import.meta.glob('/src/pages/**/*.tsx')
+      let promises = pages.map(
+        async (page) =>
+          ((await modules[`/src/pages/${page.component}.tsx`]()) as any).default
+      )
+      const result = await Promise.all(promises)
+      setComponents(result)
+    })()
   }, [])
 
-  const renderRoutes = ({ key, path }: TPage, index: number) => {
-    return <Route key={key} path={path} component={components[index]} />
-  }
-
-  if (components.length === 0) return <Loader />
+  const renderRoute = useMemo(
+    () =>
+      ({ key, path }: TPage, index: number) => {
+        return <Route key={key} path={path} component={components[index]} />
+      },
+    [components]
+  )
 
   return (
-    <Row css={{ fg: 1 }}>
-      <Col
-        css={{
-          h: 'stretch',
-          px: '$10',
-          '@xsMax': {
-            px: '$sm',
-          },
-        }}
-      >
-        <Switch>{routes.map(renderRoutes)}</Switch>
-      </Col>
-    </Row>
+    <Col css={{ flex: 1, px: '$10', '@xsMax': { px: '$sm' } }}>
+      {components.length === 0 ? (
+        <Loader message="Welcome!" />
+      ) : (
+        <Switch>{pages.map(renderRoute)}</Switch>
+      )}
+    </Col>
   )
 }
 
 export default Routes
+
+export type TPage = {
+  component: string
+  key: string
+  hide?: boolean
+  matcher?: string
+  path: string
+  title: string
+  auth?: boolean
+}
+
+export const pages: TPage[] = [
+  // Route with parameters
+  {
+    component: 'DatasetData',
+    key: 'dataset-data',
+    hide: true,
+    path: '/dataset/:datasetId',
+    title: 'Dataset Data',
+  },
+  {
+    component: 'Calculator',
+    key: 'price-calculator-by-token',
+    hide: true,
+    path: '/token/:token',
+    title: 'Price Calculator',
+  },
+  // Admin route
+  {
+    component: 'admin/Dataset',
+    key: 'admin-dataset-manager',
+    hide: true,
+    path: '/admin/dataset',
+    title: 'Admin Dataset Manager',
+  },
+  // Route with navigation
+  {
+    component: 'Dataset',
+    key: 'dataset-manager',
+    matcher: '/dataset/:datasetId*',
+    path: '/dataset',
+    title: 'Dataset Manager',
+    // auth: true,
+  },
+  {
+    component: 'Calculator',
+    key: 'price-calculator',
+    matcher: '/calculator',
+    path: '/calculator',
+    title: 'Price Calculator',
+  },
+  {
+    component: 'Tokenizer',
+    key: 'token-counter',
+    matcher: '/tokenizer',
+    path: '/tokenizer',
+    title: 'Token Counter',
+  },
+  {
+    component: 'Chat',
+    key: 'chat',
+    hide: true,
+    matcher: '/chat',
+    path: '/chat',
+    title: 'Chat',
+  },
+  // Default Route
+  {
+    component: 'auth/Login',
+    key: 'auth-signin',
+    hide: true,
+    path: '/auth/signin',
+    title: 'Login',
+  },
+  {
+    component: 'auth/Verify',
+    key: 'auth-verify',
+    hide: true,
+    path: '/auth/verify',
+    title: 'Login Verification',
+  },
+  {
+    component: 'Dataset',
+    key: 'home',
+    // matcher: '/',
+    hide: true,
+    path: '/',
+    title: 'Price Calculator',
+    // auth: true,
+  },
+  {
+    component: '404',
+    key: '404',
+    hide: true,
+    path: '/:rest*',
+    title: 'Not Found',
+  },
+]

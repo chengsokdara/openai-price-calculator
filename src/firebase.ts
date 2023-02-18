@@ -1,11 +1,14 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
-import { getAnalytics } from 'firebase/analytics'
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAnalytics, setAnalyticsCollectionEnabled } from 'firebase/analytics'
+import { connectAuthEmulator, getAuth } from 'firebase/auth'
+import {
+  CACHE_SIZE_UNLIMITED,
+  // clearIndexedDbPersistence,
+  connectFirestoreEmulator,
+  enableIndexedDbPersistence,
+  initializeFirestore,
+} from 'firebase/firestore'
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
   authDomain: import.meta.env.VITE_AUTHDOMAIN,
@@ -19,5 +22,29 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
 const analytics = getAnalytics(app)
+if (import.meta.env.DEV) {
+  setAnalyticsCollectionEnabled(analytics, false)
+}
+const auth = getAuth(app)
+if (import.meta.env.DEV) {
+  connectAuthEmulator(auth, 'http://localhost:9099')
+}
+const firestore = initializeFirestore(app, {
+  cacheSizeBytes: CACHE_SIZE_UNLIMITED,
+})
+// Uncomment to clear persistence data
+// clearIndexedDbPersistence(firestore)
+//   .then(() => {
+//     console.log('persistence data cleared!')
+//   })
+//   .catch((err) => {
+//     console.error(err)
+//   })
+if (import.meta.env.DEV) {
+  connectFirestoreEmulator(firestore, 'localhost', 8080)
+}
+enableIndexedDbPersistence(firestore).catch((err) => {
+  console.log(err.code, err)
+})
 
-export { app, analytics }
+export { app, analytics, auth, firestore }

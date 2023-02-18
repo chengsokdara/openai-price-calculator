@@ -1,23 +1,22 @@
-import { globalCss, NextUIProvider } from '@nextui-org/react'
-import { darkTheme, lightTheme } from './constants/themes'
-import useTheme from './hooks/useTheme'
-import Layout from './layout/Layout'
-
-const globalStyles = globalCss({
-  html: { height: '100%' },
-  body: { height: '100%' },
-  '#root': { height: '100%' },
-  'div[data-overlay-container="true"]': { height: '100%' },
-})
+import { NextUIProvider } from '@nextui-org/react'
+import { darkTheme, lightTheme } from 'src/constants/themes'
+import { ModalProvider } from 'src/contexts/ModalContext'
+import { UserProvider } from 'src/contexts/UserContext'
+import { globalStyles } from 'src/global.style'
+import useTheme from 'src/hooks/useTheme'
+import Layout from 'src/layout/Layout'
 
 function App() {
   globalStyles()
   const { isDark } = useTheme()
-  console.log({ isDark })
 
   return (
     <NextUIProvider theme={isDark ? darkTheme : lightTheme}>
-      <Layout />
+      <UserProvider>
+        <ModalProvider>
+          <Layout />
+        </ModalProvider>
+      </UserProvider>
     </NextUIProvider>
   )
 }

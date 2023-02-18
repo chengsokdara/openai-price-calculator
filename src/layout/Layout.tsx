@@ -1,12 +1,12 @@
 import { Container } from '@nextui-org/react'
-import Footer from './Footer'
-import Header from './Header'
-import Routes from './Routes'
+import Footer from 'src/layout/Footer'
+import Header from 'src/layout/Header'
+import Routes from 'src/layout/Routes'
 
 function Layout() {
   return (
     <Container
-      css={{ h: '100%' }}
+      css={{ h: '100%', position: 'relative' }}
       direction="column"
       display="flex"
       gap={0}

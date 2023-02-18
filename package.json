@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "tsc && vite build && vite preview",
-    "emulate": "yarn run build && firebase emulators:start --only hosting"
+    "emulate": "yarn run build && firebase emulators:start --only hosting",
+    "emulators": "firebase emulators:start"
   },
   "dependencies": {
     "@nextui-org/react": "^1.0.0-beta.12",
@@ -15,6 +16,10 @@
     "gpt3-tokenizer": "^1.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.1",
+    "react-hotkeys-hook": "^4.3.5",
+    "react-icons": "^4.7.1",
+    "react-responsive": "^9.0.2",
     "wouter": "^2.9.2"
   },
   "devDependencies": {
